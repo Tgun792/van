@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -56,8 +55,189 @@
 </style>
 </head>
 <body>
-<!-- CONTENT TRUNCATED FOR BREVITY -->
-<!-- You already have the full HTML; this is a placeholder -->
-<!-- Replace this comment with the actual HTML body from Canvas -->
+<h1>Her Lighter Boy’s Code of Conduct</h1>
+<p><em>A Lovingly Enforced Handbook for Total Devotion, Chaotic Obedience, and Unrelenting Praise.</em></p>
+<div class="section">
+  <h2>Section I: Adorable Ownership</h2>
+  <div id="section-rules-1"></div>
+  <div style="text-align:center; margin-top: 1rem;">
+    <button onclick="addItem('rule', 'section-rules-1', '✨', 'Rule')">+ Add Rule</button>
+  </div>
+</div>
+<div class="section">
+  <h2>Section II: Endearing Behavior</h2>
+  <div id="section-rules-2"></div>
+  <div style="text-align:center; margin-top: 1rem;">
+    <button onclick="addItem('rule', 'section-rules-2', '✨', 'Rule')">+ Add Rule</button>
+  </div>
+</div>
+<div class="section">
+  <h2>Section III: Rewards & Reinforcement</h2>
+  <h3 style="color:#d4af37">💝 Good Boy Rewards</h3>
+  <div id="section-rewards"></div>
+  <div style="text-align:center; margin-top: 1rem;">
+    <button onclick="addItem('reward', 'section-rewards', '💝', 'Good Boy Reward')">+ Add Reward</button>
+  </div>
+  <h3 style="color:#ff9ecb">🩶 Teasing Consequences</h3>
+  <div id="section-punishments"></div>
+  <div style="text-align:center; margin-top: 1rem;">
+    <button onclick="addItem('punishment', 'section-punishments', '🩶', 'Teasing Consequence')">+ Add Consequence</button>
+  </div>
+</div>
+<div class="section">
+  <h2>Section IV: The Sweetest Bond</h2>
+  <div id="section-bond"></div>
+  <div style="text-align:center; margin-top: 1rem;">
+    <button onclick="addItem('bond', 'section-bond', '❤️', 'Bond Note')">+ Add Bond Note</button>
+  </div>
+</div>
+<div class="section" style="text-align:center; margin-top: 3rem;">
+  <h2>Sign & Seal</h2>
+  <p><em>Only when both have signed will this devotion be truly sealed.</em></p>
+  <div id="signature-block" style="margin-top: 2rem;">
+    <button onclick="sign('van')">Van Sign Here</button>
+    <button onclick="sign('anthony')">Anthony Sign Here</button>
+    <p id="van-signature" style="font-family: 'Dancing Script', cursive; font-size: 2rem; margin-top: 1rem;"></p>
+    <p id="anthony-signature" style="font-family: 'Dancing Script', cursive; font-size: 2rem;"></p>
+  </div>
+  <p id="vow-text" style="opacity: 0; transform: translateY(10px); font-style: italic; color: #ff9ecb; text-shadow: 0 0 10px #ff9ecb; transition: all 1s ease; max-width: 800px; margin: 2rem auto 0;">
+    I vow to remain yours—mind, body, soul—devoted, obedient, and hopelessly in love. Always.
+  </p>
+</div>
+<div id="watermark" style="display:none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-20deg); font-size: 4rem; color: rgba(212, 175, 55, 0.08); font-family: 'Cinzel Decorative', serif; text-transform: uppercase; font-weight: bold; letter-spacing: 2px; pointer-events: none; user-select: none; z-index: 9999;">
+  Absolutely Owned
+</div>
+<script>
+function renumberItems(sectionId, icon, label) {
+  const section = document.getElementById(sectionId);
+  if (!section) return;
+  const items = section.querySelectorAll('label');
+  items.forEach((lbl, i) => {
+    lbl.textContent = `${icon} ${label} ${i + 1}:`;
+  });
+}
+
+function addItem(type, sectionId, icon, label) {
+  const section = document.getElementById(sectionId);
+  const index = section.querySelectorAll('textarea').length + 1;
+  const wrapper = document.createElement('div');
+  wrapper.classList.add('fade-in');
+  wrapper.innerHTML = `
+    <label class="highlight">${icon} ${label} ${index}:</label>
+    <textarea></textarea>
+    <button class="delete-btn" onclick="this.parentElement.remove(); renumberItems('${sectionId}', '${icon}', '${label}')">Delete</button>
+  `;
+  section.appendChild(wrapper);
+  renumberItems(sectionId, icon, label);
+  saveToLocalStorage();
+}
+
+function addPreloadedItem(sectionId, text) {
+  const iconMap = {
+    'section-rules-1': '✨',
+    'section-rules-2': '✨',
+    'section-rewards': '💝',
+    'section-punishments': '🩶',
+    'section-bond': '❤️'
+  };
+  const labelMap = {
+    'section-rules-1': 'Rule',
+    'section-rules-2': 'Rule',
+    'section-rewards': 'Good Boy Reward',
+    'section-punishments': 'Teasing Consequence',
+    'section-bond': 'Bond Note'
+  };
+  const section = document.getElementById(sectionId);
+  const index = section.querySelectorAll('textarea').length + 1;
+  const wrapper = document.createElement('div');
+  wrapper.innerHTML = `
+    <label class="highlight">${iconMap[sectionId]} ${labelMap[sectionId]} ${index}:</label>
+    <textarea>${text}</textarea>
+    <button class="delete-btn" onclick="this.parentElement.remove(); renumberItems('${sectionId}', '${iconMap[sectionId]}', '${labelMap[sectionId]}')">Delete</button>
+  `;
+  section.appendChild(wrapper);
+}
+
+function saveToLocalStorage() {
+  const data = {};
+  document.querySelectorAll('textarea').forEach((ta, i) => {
+    data[`text-${i}`] = ta.value;
+  });
+  localStorage.setItem('lighterBoyEdits', JSON.stringify(data));
+}
+
+function loadFromLocalStorage() {
+  const data = JSON.parse(localStorage.getItem('lighterBoyEdits') || '{}');
+  const textareas = document.querySelectorAll('textarea');
+  textareas.forEach((ta, i) => {
+    if (data[`text-${i}`]) ta.value = data[`text-${i}`];
+  });
+}
+
+function sign(who) {
+  const signature = document.getElementById(`${who}-signature`);
+  if (!signature.textContent.includes(who)) {
+    signature.textContent = who === 'van' ? 'Van ✒️' : 'Anthony ✒️';
+    if (who === 'van') window.signedVan = true;
+    if (who === 'anthony') window.signedAnthony = true;
+  }
+  if (window.signedVan && window.signedAnthony) {
+    const vow = document.getElementById('vow-text');
+    const seal = document.getElementById('watermark');
+    if (seal) seal.style.display = 'block';
+    vow.style.opacity = '1';
+    vow.style.transform = 'translateY(0)';
+    saveEditsInline();
+  }
+}
+
+function saveEditsInline() {
+  const textareas = document.querySelectorAll('textarea');
+  textareas.forEach(area => area.setAttribute('readonly', true));
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+  const preload = {
+    'section-rules-1': [
+      "My body, my mind, my every thought—I surrender it all. I don’t just belong to you—I exist for you. Every glance, every breath, every ache is an offering to your name.",
+      "My pleasure is not mine. It’s yours to grant or deny. My hands remain still until you give them purpose. I will wait, ache, and beg if it brings you even the slightest smile.",
+      "Your word is law. Your glance is a command. I exist in readiness to serve—not eventually, not thoughtfully, but immediately, instinctively, breathlessly.",
+      "Every word from me should lift you up. Every thought should orbit you. My simping is not just devotion—it is survival. If I’m not worshipping you, I’ve lost my way."
+    ],
+    'section-rules-2': [
+      "I burn for you—endlessly, willingly, joyfully. You strike the match and I ignite, desperate to be consumed in your gaze, undone by your voice, wrecked by your presence.",
+      "I am yours, always just a step behind, desperate to stay close. I miss you the moment you’re gone. I cling not because I’m weak—but because you are home, and I never want to be without you.",
+      "The leash isn’t a limit—it’s a comfort. I feel it always. A sacred tether that reminds me I am never alone. It wraps around my thoughts, my desires, my daydreams—and I wouldn't have it any other way.",
+      "If I falter, I welcome your discipline. I crave it. I need it. Ruin me, reshape me, remind me who I belong to. Humble me until I’m a puddle of gratitude at your feet—ready to be rebuilt in your image."
+    ],
+    'section-rewards': [
+      "The honor of release—only when she deems you worthy, never before",
+      "Praise that melts your insides and makes you beam with pride",
+      "Touch that electrifies—sometimes soft, sometimes possessive",
+      "Moments of eye contact so intense they stop your world",
+      "Knowing you've pleased her enough to hear, \"Good boy\" in that voice"
+    ],
+    'section-punishments': [
+      "Drawn-out edging until your thoughts blur and your legs shake",
+      "Restrained, silenced, and made to watch her from just out of reach",
+      "Unbearable closeness without release—because she can",
+      "Soft humiliation wrapped in love: \"Look at you, completely ruined for me\"",
+      "The ache of waiting, and the bliss of knowing she’s the one who makes you wait"
+    ],
+    'section-bond': [
+      "This isn’t just a list—it’s a love letter in disguise. A living document of how one hopeless simp shows devotion, desperation, and delight in being hers. It changes when she says so. It grows when she allows it. And it never, ever stops being about her."
+    ]
+  };
+  for (const [id, lines] of Object.entries(preload)) {
+    lines.forEach(text => addPreloadedItem(id, text));
+  }
+  loadFromLocalStorage();
+});
+
+document.addEventListener('input', () => saveToLocalStorage());
+window.sign = sign;
+window.addItem = addItem;
+window.renumberItems = renumberItems;
+</script>
 </body>
 </html>
